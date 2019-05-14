@@ -13,12 +13,14 @@ router.get('/', async (req, res) => {
 });
 
 
-router.post('/flyscale', async (req,res )=>{
+router.put('/flyscale', async (req,res )=>{
     
     const id = req.body.id;
     const from_date = req.body.from_date;
     const to_date =req.body.to_date;
     const days =req.body.days;
+
+    
 
     client.connect();
     await client.query(`UPDATE flyscale SET from_date = ${from_date} , to_date = ${to_date}, days = ${days} WHERE id = ${id};`);

@@ -2,17 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-
-const { Pool, Client } = require('pg');
-
-// TODO перенести коннект к db
-
-var connectionString = "postgres://postgres:,fyfkmysq1234@localhost:5432/postgres";
-
-const client = new Client({
-    connectionString: connectionString,
-  });
-  client.connect();
+const {client} = require('db');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -27,7 +17,9 @@ router.post('/login', async (req, res) => {
       if(typeof(id) != 'number' || typeof(password) != 'string')
         return res.status(401).send("No Passwd or id");
 
+      client.connect();
       const result = await client.query('SELECT role FROM users WHERE id = ' + id + '  AND password = ' + password + ';');
+      client.end();
 
       if(result.rows.length == 1){
           const token = generateAuthToken(id, result.rows[0].role);
