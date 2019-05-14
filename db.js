@@ -1,9 +1,9 @@
 const { Pool, Client } = require('pg');
+const config = require('./config/config');
 
-var connectionString = "postgres://postgres:,fyfkmysq1234@localhost:5432/postgres";
 
 const client = new Client({
-    connectionString: connectionString,
+    connectionString: config.connectionString,
   });
 
 module.exports.client = client;
