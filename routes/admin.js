@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const {isAdmin} =require('../middleware/checkRole');
 const {client, pool} = require('../db');
 
-router.get('/',auth, isAdmin, async (req, res) => {
+router.get('/',/*auth, isAdmin,*/ async (req, res) => {
     const limit = typeof(req.body.limit) == 'undefined' ? 20: req.body.limit ;
     const offset = typeof(req.body.offset) == 'undefined' ? 0: req.body.offset ;
 

@@ -64,5 +64,4 @@ router.put('/arrival',auth,isPilot, async (req, res) => {
     res.send('SUCCESS');
 });
 
-
 module.exports = router;
