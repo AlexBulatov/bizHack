@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const config = require('../config/config');
-const {client} = require('../db');
+const {client, pool} = require('../db');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -14,13 +14,13 @@ router.post('/login', async (req, res) => {
   try {
       const id = req.body.id; // в прошлый раз был баг await
       const password =  req.body.password;
-      
+
+      //console.log(password);
       if(typeof(id) != 'number' || typeof(password) != 'string')
         return res.status(401).send("No Passwd or id");
 
-      client.connect();
-      const result = await client.query(`SELECT role FROM users WHERE id = ${id}  AND password = ${password};`);
-      client.end();
+      const result = await pool.query(`SELECT role FROM users WHERE id = ${id}  AND password = '${password}';`);
+      console.log(result);
 
       if(result.rows.length == 1){
           const token = generateAuthToken(id, result.rows[0].role);

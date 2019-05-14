@@ -1,4 +1,4 @@
 module.exports = {
     jwtPasswd: 'secret', 
-    connectionString : "postgres://postgres:,fyfkmysq1234@localhost:5432/postgres"
+    connectionString : "postgres://postgres:docker@localhost:5432/s7bizhack"
 };
