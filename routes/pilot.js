@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
+
 const auth = require('../middleware/auth');
+const {isPilot} =require('../middleware/checkRole');
 const {client} = require('../db');
 
-router.get('/',auth, async (req,res) =>{
+router.get('/',auth, isPilot, async (req,res) =>{
     let id = req.user.id;
     
     client.connect();
@@ -13,7 +15,7 @@ router.get('/',auth, async (req,res) =>{
     res.send(result.rows[0]);
 });
 
-router.put('/',auth, async (req, res) => { // for test only
+router.put('/',auth, isPilot, async (req, res) => { // for test only
     let departure = req.body.departure;
     let arrival = req.body.arrival;
     let id = req.user.id;
@@ -31,7 +33,7 @@ router.put('/',auth, async (req, res) => { // for test only
     res.send('SUCCESS');
 });
 
-router.put('/departure',auth, async (req, res) => { 
+router.put('/departure',auth, isPilot, async (req, res) => { 
     let departure = req.body.departure;
     let id = req.user.id;
 
@@ -48,7 +50,7 @@ router.put('/departure',auth, async (req, res) => {
     res.send('SUCCESS');
 });
 
-router.put('/arrival',auth, async (req, res) => { 
+router.put('/arrival',auth,isPilot, async (req, res) => { 
     let arrival = req.body.arrival;
     let id = req.user.id;
 
@@ -64,5 +66,6 @@ router.put('/arrival',auth, async (req, res) => {
 
     res.send('SUCCESS');
 });
+
 
 module.exports = router;
