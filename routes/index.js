@@ -18,7 +18,7 @@ router.post('/login', async (req, res) => {
         return res.status(401).send("No Passwd or id");
 
       client.connect();
-      const result = await client.query('SELECT role FROM users WHERE id = ' + id + '  AND password = ' + password + ';');
+      const result = await client.query(`SELECT role FROM users WHERE id = ${id}  AND password = ${password};`);
       client.end();
 
       if(result.rows.length == 1){

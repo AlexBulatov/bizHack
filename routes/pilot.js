@@ -5,10 +5,15 @@ const {client} = require('../db');
 
 router.get('/',auth, async (req,res) =>{
     let id = req.user.id;
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id}`);
+    
+    client.connect();
+    let result = await client.query(`SELECT departure, arrival, flight FROM flies WHERE pilot  = ${id} AND done = false ORDER BY departure ASC`);
+    client.end();
+    
+    res.send(result.rows[0]);
 });
 
-router.post('/',auth, async (req, res) => { // for test only
+router.put('/',auth, async (req, res) => { // for test only
     let departure = req.body.departure;
     let arrival = req.body.arrival;
     let id = req.user.id;
@@ -17,7 +22,7 @@ router.post('/',auth, async (req, res) => { // for test only
         return res.status(401).send("No departure or arrival");
 
     client.connect();
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id}`);
+    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`);
     await client.query(`UPDATE flies
                 SET departure = ${departure.toPostgers()}, arrival = ${arrival.toPostgers()}, done = true
                 WHERE id = ${result.rows[0].id};`);
@@ -26,7 +31,7 @@ router.post('/',auth, async (req, res) => { // for test only
     res.send('SUCCESS');
 });
 
-router.post('/departure',auth, async (req, res) => { 
+router.put('/departure',auth, async (req, res) => { 
     let departure = req.body.departure;
     let id = req.user.id;
 
@@ -34,16 +39,16 @@ router.post('/departure',auth, async (req, res) => {
         return res.status(401).send("No departure");
 
     client.connect();
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id}`);
+    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`);
     await client.query(`UPDATE flies
                 SET departure = ${departure.toPostgers()}
-                WHERE id = ${result.rows.id};`);
+                WHERE id = ${result.rows[0].id};`);
     client.end();
 
     res.send('SUCCESS');
 });
 
-router.post('/arrival',auth, async (req, res) => { 
+router.put('/arrival',auth, async (req, res) => { 
     let arrival = req.body.arrival;
     let id = req.user.id;
 
@@ -51,10 +56,10 @@ router.post('/arrival',auth, async (req, res) => {
         return res.status(401).send("No arrival");
 
     client.connect();
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id}`);
+    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`);
     await client.query(`UPDATE flies
                 SET arrival = ${arrival.toPostgers()}, done = true
-                WHERE id = ${result.rows.id};`);
+                WHERE id = ${result.rows[0].id};`);
     client.end();
 
     res.send('SUCCESS');
