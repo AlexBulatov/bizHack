@@ -22,7 +22,7 @@ router.put('/',auth, async (req, res) => { // for test only
         return res.status(401).send("No departure or arrival");
 
     client.connect();
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`);
+    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`); // TODO обьеденить запрос
     await client.query(`UPDATE flies
                 SET departure = ${departure.toPostgers()}, arrival = ${arrival.toPostgers()}, done = true
                 WHERE id = ${result.rows[0].id};`);
@@ -39,7 +39,7 @@ router.put('/departure',auth, async (req, res) => {
         return res.status(401).send("No departure");
 
     client.connect();
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`);
+    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`); // TODO обьеденить запрос
     await client.query(`UPDATE flies
                 SET departure = ${departure.toPostgers()}
                 WHERE id = ${result.rows[0].id};`);
@@ -56,7 +56,7 @@ router.put('/arrival',auth, async (req, res) => {
         return res.status(401).send("No arrival");
 
     client.connect();
-    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`);
+    let result = await client.query(`SELECT id FROM flies WHERE pilot = ${id} AND done = false ORDER BY departure ASC`); // TODO обьеденить запрос
     await client.query(`UPDATE flies
                 SET arrival = ${arrival.toPostgers()}, done = true
                 WHERE id = ${result.rows[0].id};`);
