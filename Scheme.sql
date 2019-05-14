@@ -36,7 +36,7 @@ INSERT INTO users(fio, password, role)
     ('Фил Флекс Милос', '1', 2);
 
 INSERT INTO flyscale (from_date, to_date, days)
-    VALUES ('25 hours'::interval, '50 hours'::interval, 7)
+    VALUES ('25 hours'::interval, '50 hours'::interval, 7),
     ('50 hours 1 minutes'::interval, '100 hours'::interval, 14),
     ('100 hours 1 minutes'::interval, '150 hours'::interval, 21),
     ('150 hours 1 minutes'::interval, '200 hours'::interval, 28),
