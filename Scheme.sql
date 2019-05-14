@@ -76,6 +76,14 @@ INSERT INTO flies (pilot, departure, arrival, done, flight)
     (2, current_timestamp - '15 days 5 hours'::interval, current_timestamp - '15 days'::interval , true, 'Kuk-231'),
     (2, current_timestamp - '16 days 5 hours'::interval, current_timestamp - '16 days'::interval , true, 'Kuk-231');
 
+
+CREATE VIEW flight_year_calc AS
+SELECT id, fio, (f.flyhours/EXTRACT(DOY FROM current_date))*365 as "hours"
+    FROM users JOIN
+    (SELECT pilot, SUM(arrival - departure) as flyhours
+    FROM flies
+    GROUP BY pilot) as f ON f.pilot=users.id;
+
     /*
     SELECT fio, f.flyhours/EXTRACT(DOY FROM current_date) * 365 as "hours"
         FROM users JOIN
