@@ -31,4 +31,4 @@ SELECT fio, f.flyhours/EXTRACT(DOY FROM current_date) as 'hours'
     FROM users JOIN
     (SELECT id, SUM(arrival - departure) as flyhours 
     FROM flies
-    GROUP BY id) f.id=users.id; 
+    GROUP BY id) ON f.id=users.id; 
