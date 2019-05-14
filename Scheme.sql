@@ -17,7 +17,8 @@ CREATE TABLE flies (
     pilot int REFERENCES users(id),
     departure timestamp,
     arrival timestamp,
-    flight varchar
+    flight varchar,
+    done boolean DEFAULT false 
 );
 
 CREATE TABLE vacation (
@@ -27,8 +28,8 @@ CREATE TABLE vacation (
     to_date date
 );
 
-SELECT fio, f.flyhours/EXTRACT(DOY FROM current_date) as 'hours'
+SELECT fio, f.flyhours/EXTRACT(DOY FROM current_date) as "hours"
     FROM users JOIN
     (SELECT id, SUM(arrival - departure) as flyhours 
     FROM flies
-    GROUP BY id) ON f.id=users.id; 
+    GROUP BY id) f.id=users.id; 
