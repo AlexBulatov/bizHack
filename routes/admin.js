@@ -13,7 +13,11 @@ router.get('/',auth, isAdmin, async (req, res) => {
 
     result = {
         flies: result.rows,
-        flyscale: result2.rows
+        flyscale: result2.rows.map((item)=>{
+            return {
+              hours: `${item.from_date.hours}:00:00 - ${item.to_date.hours}:00:00`,
+              days: item.days
+            }})
     };
 
     res.json(result);
