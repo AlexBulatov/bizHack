@@ -60,7 +60,7 @@ router.put('/arrival',auth,isPilot, async (req, res) => {
     res.send('SUCCESS');
 });
 
-router.get('/flyscale_me', async(req, res) => {
+router.get('/flynow', auth, isPilot, async(req, res) => {
     let id = req.user.id;
 
     if(typeof(id) != 'number')
@@ -69,6 +69,19 @@ router.get('/flyscale_me', async(req, res) => {
     let result = await pool.query(`SELECT hours FROM flight_year_calc WHERE id = ${id}`);
 
     res.send(result.rows[0].hours);
+});
+
+router.get('/flyscale',auth, isPilot, async (req, res) => {
+  let result = await pool.query(`SELECT from_date, to_date, days FROM flyscale ORDER BY from_date;`);
+
+  console.log(result.rows[0]);
+
+  res.json(result.rows.map((item)=>{
+    return {
+      hours: `${item.from_date.hours}:00:00 - ${item.to_date.hours}:00:00`,
+      days: item.days
+    }
+  }));
 });
 
 module.exports = router;

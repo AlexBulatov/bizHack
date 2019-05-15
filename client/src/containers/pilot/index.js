@@ -1,10 +1,12 @@
 import React, {Component, Fragment} from 'react'
+import * as allConst from '../../modules/const';
 import Header from "../header";
 
 class Pilot extends Component {
     state = {
         timeFly: "00:00:00",
-        timeButton: "Начать полёт"
+        timeButton: "Начать полёт",
+        flyscales: [],
     };
 
     handleClick = () => {
@@ -28,10 +30,22 @@ class Pilot extends Component {
             this.setState({timeFly: "00:00:00"});
             let dateStop = new Date();
         }
-
     };
 
-    render() {
+    componentDidMount() {
+      let fly = fetch('/pilot/flyscale', {
+        headers: {
+          "x-auth-token": allConst.getCurrentUser().token
+        },
+        method: 'GET'
+      }).then(data => {
+        return data.json();
+      }).then( data => {
+        this.setState({flyscales: data});
+      });
+    }
+
+  render() {
         return (
             <Fragment>
                 <Header role={"пилота"}/>
@@ -128,26 +142,12 @@ class Pilot extends Component {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr className="d-flex">
-                                    <td className="col">от 25:00:00 до 30:00:00 часов</td>
-                                    <td className="col">7</td>
-                                </tr>
-                                <tr className="d-flex">
-                                    <td className="col">от 50:01:00 до 100:00:00 часов</td>
-                                    <td className="col">14</td>
-                                </tr>
-                                <tr className="d-flex">
-                                    <td className="col">от 100:01:00 до 150:00:00 часов</td>
-                                    <td className="col">21</td>
-                                </tr>
-                                <tr className="d-flex">
-                                    <td className="col">от 150:01:00 до 200:00:00 часов</td>
-                                    <td className="col">28</td>
-                                </tr>
-                                <tr className="d-flex">
-                                    <td className="col">от 200:01:00 до 250:00:00 часов</td>
-                                    <td className="col">36</td>
-                                </tr>
+                                  {this.state.flyscales.map(function(item){
+                                    return (<tr className="d-flex">
+                                      <td className="col">{item.hours}</td>
+                                      <td className="col">{item.days}</td>
+                                    </tr>);
+                                  })}
                                 </tbody>
                             </table>
                         </div>
