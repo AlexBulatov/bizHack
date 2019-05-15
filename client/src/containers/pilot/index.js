@@ -7,6 +7,7 @@ class Pilot extends Component {
         timeFly: "00:00:00",
         timeButton: "Начать полёт",
         flyscales: [],
+        current_fly: "00:00:00"
     };
 
     handleClick = () => {
@@ -33,7 +34,7 @@ class Pilot extends Component {
     };
 
     componentDidMount() {
-      let fly = fetch('/pilot/flyscale', {
+      fetch('/pilot/flyscale', {
         headers: {
           "x-auth-token": allConst.getCurrentUser().token
         },
@@ -42,6 +43,17 @@ class Pilot extends Component {
         return data.json();
       }).then( data => {
         this.setState({flyscales: data});
+      });
+
+      fetch('/pilot/flynow', {
+        headers: {
+          "x-auth-token": allConst.getCurrentUser().token
+        },
+        method: 'GET'
+      }).then(data => {
+        return data.json();
+      }).then( data => {
+        this.setState({current_fly: `${data.hours||'00'}:${data.minutes||'00'}:${data.seconds||'00'}`});
       });
     }
 
@@ -61,7 +73,7 @@ class Pilot extends Component {
                             <div className="col-10">
                                 <div className="row">
                                     <p>Личный налёт:</p>
-                                    <p className="ml-2">68:15:05</p>
+                                    <p className="ml-2">{this.state.current_fly}</p>
                                 </div>
 
                                 <div className="row">
