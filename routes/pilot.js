@@ -6,19 +6,15 @@ const {client, pool} = require('../db');
 
 router.get('/',auth, isPilot, async (req,res) =>{
     let id = req.user.id;
+
+    let result = await pool.query(`SELECT departure, arrival, flight FROM flies WHERE pilot  = ${id} AND done = false ORDER BY departure ASC`);
     
-    client.connect();
-    let result = await client.query(`SELECT departure, arrival, flight FROM flies WHERE pilot  = ${id} AND done = false ORDER BY departure ASC`);
-    client.end();
-    
-    res.send(result.rows[0]);
+    res.send(result.rows);
 });
 
 router.put('/',auth, isPilot, async (req, res) => { // for test only
 
-    //client.connect();
     let result = await pool.query(`SELECT departure, arrival, flight FROM flies WHERE pilot  = ${id} AND done = false ORDER BY departure ASC`);
-    //client.end();
 
     res.send(result.rows[0]);
 });
@@ -62,6 +58,17 @@ router.put('/arrival',auth,isPilot, async (req, res) => {
     await pool.query(`UPDATE flies SET arrival = ${arrival.toPostgers()}, done = true  WHERE id = ${result.rows[0].id};`);
 
     res.send('SUCCESS');
+});
+
+router.get('/flyscale_me', async(req, res) => {
+    let id = req.user.id;
+
+    if(typeof(id) != 'number')
+      return res.status(401).send("No id");
+
+    let result = await pool.query(`SELECT hours FROM flight_year_calc WHERE id = ${id}`);
+
+    res.send(result.rows[0].hours);
 });
 
 module.exports = router;
