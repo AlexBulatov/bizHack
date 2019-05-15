@@ -1,0 +1,20 @@
+.header-profile_text p{
+    margin-bottom: 0;
+}
+.round-img {
+    border-radius: 100%;
+}
+p {
+    line-height: 100%;
+}
+.time-fly {
+    margin-bottom: 0;
+    font-size: 35px;
+}
+.font-awesome-button {
+    background-color: transparent;
+    border: none;
+}
+.font-awesome-button:focus {
+    outline: none;
+}
