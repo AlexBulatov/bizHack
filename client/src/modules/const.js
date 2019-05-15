@@ -18,8 +18,9 @@ export function getCurrentUser() {
 
 }
 
-export function redirect(role) {
-    if (getCurrentUser().role !== role)
+export function redirect() {
+    console.log(getCurrentUser().role);
+    if (getCurrentUser().role)
         switch (getCurrentUser().role) {
             case 1:
                 document.location.href = `${PATH_PILOT}`;
