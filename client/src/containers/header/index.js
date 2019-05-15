@@ -4,7 +4,7 @@ import * as allConst from '../../modules/const';
 
 // Получении ФИО и проверка на отстутсвие данных о пользователе в localStorage
 const getUserFIO = () => {
-    return allConst.getCurrentUser() === 'empty' ? "" : `${allConst.getCurrentUser().lastName} ${allConst.getCurrentUser().firstName[0]}.${allConst.getCurrentUser().middleName[0]}.`;
+    return allConst.getCurrentUser() === 'empty' ? "" : `${allConst.getCurrentUser().fio}.`;
 };
 const Header = (props) => (
     <Fragment>

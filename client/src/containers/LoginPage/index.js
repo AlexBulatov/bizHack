@@ -22,8 +22,12 @@ class LoginPage extends Component {
         this.setState({isLoading: true});
         this.setState({warning: false});
         fetch(`/login`, {
+            headers: {
+                "Accept":"application/json",
+                "Content-Type" : "application/json"
+            } ,
             method: 'POST',
-            body: JSON.stringify({login: $("#inpLogin").val(), password: $("#inpPassword").val()})
+            body: JSON.stringify({id: parseInt($("#inpLogin").val()), password: $("#inpPassword").val()})
         }).then(function (response) {
             errorStatus.status = response.status;
             errorStatus.statusText = response.statusText;
@@ -33,7 +37,7 @@ class LoginPage extends Component {
             errorStatus.statusText = null;
             allConst.setCurrentUser(data);//добавление данных в LocalStorage
             this.setState({isLoading: false});
-            allConst.redirect();
+            allConst.redirect(data.role);
         }).catch((error) => {
             this.setState({isLoading: false});
             switch (errorStatus.statusText) {

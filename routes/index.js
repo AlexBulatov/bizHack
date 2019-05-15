@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
       const id = req.body.id; // в прошлый раз был баг await
       const password =  req.body.password;
 
-      //console.log(password);
+      console.log(req.body);
       if(typeof(id) != 'number' || typeof(password) != 'string')
         return res.status(401).send("No Passwd or id");
 
@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
 
       if(result.rows.length == 1){
           const token = generateAuthToken(id, result.rows[0].role);
-          const SendObj = JSON.stringify({"x-auth-token": token, fio: result.rows[0].fio});
+          const SendObj = JSON.stringify({"x-auth-token": token, fio: result.rows[0].fio, role: result.rows[0].role});
           res.header('x-auth-token', token).send(SendObj); 
       }
       else

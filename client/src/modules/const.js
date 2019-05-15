@@ -18,14 +18,14 @@ export function getCurrentUser() {
 
 }
 
-export function redirect(typeId) {
-    if (getCurrentUser().typeId !== typeId)
-        switch (getCurrentUser().typeId) {
+export function redirect(role) {
+    if (getCurrentUser().role !== role)
+        switch (getCurrentUser().role) {
+            case 1:
+                document.location.href = `${PATH_PILOT}`;
+                break;
             case 2:
                 document.location.href = `${PATH_EMPLOYER}`;
-                break;
-            case 3:
-                document.location.href = `${PATH_PILOT}`;
                 break;
             default://если нет такого id => на вход
                 //setCurrentUser({});
